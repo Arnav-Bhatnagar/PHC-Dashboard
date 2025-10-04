@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Search, Download, Eye, TrendingUp, Activity, Calendar, Pill } from 'lucide-react'
 import { generatePDF } from '../utils/pdfGenerator'
 import { useTranslation } from 'react-i18next'
@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next'
 const mockPatients = [
   {
     id: 'P11125',
+    familyId: 'F100',
     name: 'Rajesh Kumar',
     age: 45,
     gender: 'Male',
@@ -36,6 +37,7 @@ const mockPatients = [
   },
   {
     id: 'P12126',
+    familyId: 'F100',
     name: 'Sunita Devi',
     age: 32,
     gender: 'Female',
@@ -64,6 +66,7 @@ const mockPatients = [
   },
   {
     id: 'P13127',
+    familyId: 'F101',
     name: 'Amit Singh',
     age: 28,
     gender: 'Male',
@@ -89,6 +92,7 @@ const mockPatients = [
   },
   {
     id: 'P14128',
+    familyId: 'F102',
     name: 'Priya Sharma',
     age: 38,
     gender: 'Female',
@@ -124,6 +128,13 @@ export default function HealthRecords() {
   const [pdfLang, setPdfLang] = useState('en')
   const [severityFilter, setSeverityFilter] = useState('all')
   const [sortBySeverity, setSortBySeverity] = useState(false)
+  
+  const [viewMode, setViewMode] = useState('individual') // 'individual' or 'family'
+  const [expandedFamilies, setExpandedFamilies] = useState({})
+
+  const toggleFamily = (fid) => {
+    setExpandedFamilies(prev => ({ ...prev, [fid]: !prev[fid] }))
+  }
 
   const severityOrder = { urgent: 0, followup: 1, vaccine_pending: 2, routine: 3 }
 
@@ -157,6 +168,14 @@ export default function HealthRecords() {
       return oa - ob
     })
   }
+
+  // group by family if requested
+  const families = displayedPatients.reduce((acc, p) => {
+    const fid = p.familyId || 'unknown'
+    if (!acc[fid]) acc[fid] = []
+    acc[fid].push(p)
+    return acc
+  }, {})
 
   const { i18n } = useTranslation()
 
@@ -198,6 +217,13 @@ export default function HealthRecords() {
 
       <div className="mb-4 flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
+          <label className="text-sm text-gray-600">{t('View Mode')}:</label>
+          <div className="flex items-center gap-2">
+            <button onClick={() => setViewMode('individual')} className={`px-3 py-1 rounded ${viewMode === 'individual' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`}>{t('Individual')}</button>
+            <button onClick={() => setViewMode('family')} className={`px-3 py-1 rounded ${viewMode === 'family' ? 'bg-blue-600 text-white' : 'bg-gray-100'}`}>{t('By Family')}</button>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
           <label className="text-sm text-gray-600">{t('Filter by Severity')}:</label>
           <select
             value={severityFilter}
@@ -227,7 +253,7 @@ export default function HealthRecords() {
         <table className="w-full">
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{t('Patient ID')}</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{viewMode === 'individual' ? t('Patient ID') : t('Family ID')}</th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{t('Patient Name')}</th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{t('Age')}</th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{t('Gender')}</th>
@@ -238,7 +264,7 @@ export default function HealthRecords() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {displayedPatients.map((patient) => (
+            {viewMode === 'individual' && displayedPatients.map((patient) => (
               <tr key={patient.id} className="hover:bg-gray-50 transition-colors">
                 <td className="px-6 py-4 text-sm text-gray-700">{patient.id}</td>
                 <td className="px-6 py-4 text-sm text-gray-900 font-medium">{patient.name}</td>
@@ -271,6 +297,57 @@ export default function HealthRecords() {
                 </td>
               </tr>
             ))}
+
+            {viewMode === 'family' && Object.keys(families).map(fid => {
+              const members = families[fid]
+              const primary = members[0]
+              return (
+                <React.Fragment key={fid}>
+                  <tr className="bg-gray-50">
+                    <td className="px-6 py-4 text-sm font-medium">{fid}</td>
+                    <td className="px-6 py-4 text-sm font-semibold">{members.length} members</td>
+                    <td className="px-6 py-4 text-sm">-</td>
+                    <td className="px-6 py-4 text-sm">-</td>
+                    <td className="px-6 py-4 text-sm">-</td>
+                    <td className="px-6 py-4 text-sm">{primary.lastVisit}</td>
+                    <td className="px-6 py-4 text-sm">
+                      <div className="flex gap-2">
+                        <button onClick={() => toggleFamily(fid)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
+                          {expandedFamilies[fid] ? t('Hide Members') : t('View Family')}
+                        </button>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-sm">
+                      <span className={`text-xs px-2 py-1 rounded-full font-medium ${severityBadgeClass(primary.severity)}`}>
+                        {severityLabel(primary.severity)}
+                      </span>
+                    </td>
+                  </tr>
+
+                  {expandedFamilies[fid] && members.map(m => (
+                    <tr key={m.id} className="border-l-4 border-dashed border-gray-200">
+                      <td className="px-6 py-2 text-sm text-gray-700">{/* empty in family view per request */}</td>
+                      <td className="px-6 py-2 text-sm text-gray-700">{m.name}</td>
+                      <td className="px-6 py-2 text-sm text-gray-700">{m.age}</td>
+                      <td className="px-6 py-2 text-sm text-gray-700">{m.gender}</td>
+                      <td className="px-6 py-2 text-sm text-gray-700">{m.contact}</td>
+                      <td className="px-6 py-2 text-sm text-gray-700">{m.lastVisit}</td>
+                      <td className="px-6 py-2 text-sm">
+                        <div className="flex gap-2">
+                          <button onClick={() => setSelectedPatient(m)} className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">{t('View')}</button>
+                          <button onClick={() => handleDownloadPDF(m)} className="p-2 text-green-600 hover:bg-green-50 rounded-lg transition-colors">{t('Download')}</button>
+                        </div>
+                      </td>
+                      <td className="px-6 py-2 text-sm">
+                        <span className={`text-xs px-2 py-1 rounded-full font-medium ${severityBadgeClass(m.severity)}`}>
+                          {severityLabel(m.severity)}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </React.Fragment>
+              )
+            })}
           </tbody>
         </table>
       </div>

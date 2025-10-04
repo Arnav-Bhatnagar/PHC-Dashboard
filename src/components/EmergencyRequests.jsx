@@ -2,10 +2,10 @@ import { useState } from 'react'
 import { AlertCircle, Phone, MapPin, Clock, CheckCircle } from 'lucide-react'
 
 const initialRequests = [
-  { id: 1, patient: 'Ramesh Yadav', location: 'Village Rampur, Ward 2', phone: '9876543230', type: 'Chest Pain', time: '10 mins ago', status: 'pending', priority: 'high' },
-  { id: 2, patient: 'Kavita Sharma', location: 'Village Sikarpur, Ward 1', phone: '9876543231', type: 'High Fever', time: '25 mins ago', status: 'pending', priority: 'medium' },
-  { id: 3, patient: 'Sunil Kumar', location: 'Village Chandanpur, Ward 3', phone: '9876543232', type: 'Accident', time: '1 hour ago', status: 'resolved', priority: 'high' },
-  { id: 4, patient: 'Anita Devi', location: 'Village Rampur, Ward 2', phone: '9876543233', type: 'Pregnancy Complications', time: '2 hours ago', status: 'resolved', priority: 'high' },
+  { id: 1, patient: 'Ramesh Yadav', location: 'Village Rampur, Ward 2', phone: '9876543230', type: 'Chest Pain', time: '10 mins ago', status: 'pending', priority: 'high', asha:'ASHA-A0112' },
+  { id: 2, patient: 'Kavita Sharma', location: 'Village Sikarpur, Ward 1', phone: '9876543231', type: 'High Fever', time: '25 mins ago', status: 'pending', priority: 'medium', asha:'ASHA-A0122' },
+  { id: 3, patient: 'Sunil Kumar', location: 'Village Chandanpur, Ward 3', phone: '9876543232', type: 'Accident', time: '1 hour ago', status: 'resolved', priority: 'high', asha:'ASHA-A0332' },
+  { id: 4, patient: 'Anita Devi', location: 'Village Rampur, Ward 2', phone: '9876543233', type: 'Pregnancy Complications', time: '2 hours ago', status: 'resolved', priority: 'high', asha:'ASHA-A0032' },
 ]
 
 export default function EmergencyRequests() {
@@ -95,6 +95,7 @@ export default function EmergencyRequests() {
                   <div className="flex items-center gap-2 text-gray-600">
                     <AlertCircle size={16} />
                     <span><strong>Emergency Type:</strong> {request.type}</span>
+                    
                   </div>
                   <div className="flex items-center gap-2 text-gray-600">
                     <Phone size={16} />
@@ -108,6 +109,7 @@ export default function EmergencyRequests() {
                     <Clock size={16} />
                     <span><strong>Reported:</strong> {request.time}</span>
                   </div>
+                  <span><strong>Sent By:</strong> {request.asha}</span>
                 </div>
               </div>
 

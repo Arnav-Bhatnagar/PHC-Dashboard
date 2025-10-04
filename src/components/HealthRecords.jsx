@@ -254,7 +254,7 @@ export default function HealthRecords() {
           <thead className="bg-gray-100">
             <tr>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{viewMode === 'individual' ? t('Patient ID') : t('Family ID')}</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{t('Patient Name')}</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{viewMode === 'family' ? t('Head of Family') : t('Patient Name')}</th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{t('Age')}</th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{t('Gender')}</th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{t('Contact')}</th>
@@ -305,10 +305,10 @@ export default function HealthRecords() {
                 <React.Fragment key={fid}>
                   <tr className="bg-gray-50">
                     <td className="px-6 py-4 text-sm font-medium">{fid}</td>
-                    <td className="px-6 py-4 text-sm font-semibold">{members.length} members</td>
-                    <td className="px-6 py-4 text-sm">-</td>
-                    <td className="px-6 py-4 text-sm">-</td>
-                    <td className="px-6 py-4 text-sm">-</td>
+                    <td className="px-6 py-4 text-sm font-semibold">{primary.name}</td>
+                    <td className="px-6 py-4 text-sm">{primary.age}</td>  {/*what is primary here */}
+                    <td className="px-6 py-4 text-sm">{primary.gender}</td>
+                    <td className="px-6 py-4 text-sm">{primary.contact}</td>
                     <td className="px-6 py-4 text-sm">{primary.lastVisit}</td>
                     <td className="px-6 py-4 text-sm">
                       <div className="flex gap-2">

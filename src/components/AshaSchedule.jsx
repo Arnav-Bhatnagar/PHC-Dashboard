@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Calendar, Clock, MapPin, CreditCard as Edit2, Save, X, Plus } from 'lucide-react'
+import { Calendar, Clock, MapPin, CreditCard as Edit2, Save, X, Plus, Trash2 } from 'lucide-react'
 
 const initialSchedule = [
   { id: 1, asha: 'Meera Gupta', day: 'Monday', time: '9:00 AM - 1:00 PM', location: 'Village Rampur', activity: 'Health Checkup Camp' },
@@ -26,6 +26,16 @@ export default function AshaSchedule() {
     setSchedules(schedules.map(s => s.id === editingId ? editForm : s))
     setEditingId(null)
     setEditForm({})
+  }
+
+  const handleDelete = (id) => {
+    const ok = window.confirm('Are you sure you want to delete this schedule?')
+    if (!ok) return
+    setSchedules(schedules.filter(s => s.id !== id))
+    if (editingId === id) {
+      setEditingId(null)
+      setEditForm({})
+    }
   }
 
   const handleCancel = () => {
@@ -155,6 +165,12 @@ export default function AshaSchedule() {
                             className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                           >
                             <Edit2 size={16} />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(schedule.id)}
+                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors ml-2"
+                          >
+                            <Trash2 size={16} />
                           </button>
                         </div>
                       )}

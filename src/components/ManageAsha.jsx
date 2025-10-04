@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { UserPlus, Trash2, CreditCard as Edit2, Phone, Mail } from 'lucide-react'
 
 const initialAshaWorkers = [
-  { id: 1, name: 'Meera Gupta', phone: '9876543220', email: 'meera@phc.in', area: 'Ward 1', experience: '5 years' },
-  { id: 2, name: 'Savita Yadav', phone: '9876543221', email: 'savita@phc.in', area: 'Ward 2', experience: '3 years' },
-  { id: 3, name: 'Radha Kumari', phone: '9876543222', email: 'radha@phc.in', area: 'Ward 3', experience: '7 years' },
+  { id: 1, ashaId: 'ASHA-0A011', name: 'Meera Gupta', phone: '9876543220', email: 'meera@phc.in', area: 'Ward 1', experience: '5 years' },
+  { id: 2, ashaId: 'ASHA-0A022', name: 'Savita Yadav', phone: '9876543221', email: 'savita@phc.in', area: 'Ward 2', experience: '3 years' },
+  { id: 3, ashaId: 'ASHA-0A033', name: 'Radha Kumari', phone: '9876543222', email: 'radha@phc.in', area: 'Ward 3', experience: '7 years' },
 ]
 
 export default function ManageAsha() {
@@ -12,6 +12,7 @@ export default function ManageAsha() {
   const [showAddForm, setShowAddForm] = useState(false)
   const [editingId, setEditingId] = useState(null)
   const [formData, setFormData] = useState({
+    ashaId: '',
     name: '',
     phone: '',
     email: '',
@@ -21,7 +22,10 @@ export default function ManageAsha() {
 
   const handleAdd = () => {
     if (formData.name && formData.phone && formData.area) {
-      setAshaWorkers([...ashaWorkers, { ...formData, id: Date.now() }])
+      const generatedAshaId = formData.ashaId && formData.ashaId.trim()
+        ? formData.ashaId.trim()
+        : `ASHA-${Date.now().toString().slice(-6)}`
+      setAshaWorkers([...ashaWorkers, { ...formData, id: Date.now(), ashaId: generatedAshaId }])
       setFormData({ name: '', phone: '', email: '', area: '', experience: '' })
       setShowAddForm(false)
     }
@@ -36,7 +40,7 @@ export default function ManageAsha() {
 
   const handleUpdate = () => {
     setAshaWorkers(ashaWorkers.map(a => a.id === editingId ? { ...formData, id: editingId } : a))
-    setFormData({ name: '', phone: '', email: '', area: '', experience: '' })
+    setFormData({ ashaId: '', name: '', phone: '', email: '', area: '', experience: '' })
     setEditingId(null)
     setShowAddForm(false)
   }
@@ -67,6 +71,13 @@ export default function ManageAsha() {
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
           <h3 className="text-xl font-semibold mb-4">{editingId ? 'Edit ASHA Worker' : 'Add New ASHA Worker'}</h3>
           <div className="grid grid-cols-2 gap-4">
+            <input
+              type="text"
+              placeholder="ASHA ID"
+              value={formData.ashaId}
+              onChange={(e) => setFormData({ ...formData, ashaId: e.target.value })}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
             <input
               type="text"
               placeholder="Full Name"
@@ -114,7 +125,7 @@ export default function ManageAsha() {
               onClick={() => {
                 setShowAddForm(false)
                 setEditingId(null)
-                setFormData({ name: '', phone: '', email: '', area: '', experience: '' })
+                  setFormData({ ashaId: '', name: '', phone: '', email: '', area: '', experience: '' })
               }}
               className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
             >
@@ -129,7 +140,10 @@ export default function ManageAsha() {
           <div key={asha.id} className="bg-white rounded-lg shadow p-6 hover:shadow-md transition-shadow">
             <div className="flex justify-between items-start">
               <div className="flex-1">
-                <h3 className="text-xl font-semibold text-gray-800 mb-3">{asha.name}</h3>
+                <div className="flex items-center gap-3 mb-2">
+                  <h3 className="text-xl font-semibold text-gray-800">{asha.name}</h3>
+                  <span className="text-xs px-2 py-1 rounded bg-gray-100 text-gray-700">{asha.ashaId}</span>
+                </div>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="flex items-center gap-2 text-gray-600">
                     <Phone size={16} />

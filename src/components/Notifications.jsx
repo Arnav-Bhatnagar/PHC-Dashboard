@@ -7,7 +7,8 @@ export default function Notifications() {
   const [notification, setNotification] = useState({
     recipient: 'all',
     title: '',
-    message: ''
+    message: '',
+    targetId: ''
   })
   const [sentNotifications, setSentNotifications] = useState([
     { id: 1, recipient: 'All ASHA Workers', title: 'Monthly Meeting', message: 'Monthly review meeting scheduled for October 5th', time: '2025-09-28 10:30 AM' },
@@ -16,18 +17,33 @@ export default function Notifications() {
   ])
 
   const handleSend = () => {
-    if (notification.title && notification.message) {
-      const newNotification = {
-        id: Date.now(),
-        recipient: notification.recipient === 'all' ? 'All ASHA Workers' : notification.recipient,
-        title: notification.title,
-        message: notification.message,
-        time: new Date().toLocaleString()
-      }
-      setSentNotifications([newNotification, ...sentNotifications])
-      setNotification({ recipient: 'all', title: '', message: '' })
-      alert(t('Notification sent successfully!'))
+    // require title/message
+    if (!notification.title || !notification.message) return
+
+    // if specific recipient, require targetId
+    if ((notification.recipient === 'specific_patient' || notification.recipient === 'specific_asha') && !notification.targetId) {
+      alert(notification.recipient === 'specific_patient' ? t('Please enter the patient ID') : t('Please enter the ASHA ID'))
+      return
     }
+
+    const recipientLabel = notification.recipient === 'all'
+      ? 'All ASHA Workers'
+      : notification.recipient === 'specific_asha'
+        ? `ASHA ID: ${notification.targetId}`
+        : notification.recipient === 'specific_patient'
+          ? `Patient ID: ${notification.targetId}`
+          : notification.recipient
+
+    const newNotification = {
+      id: Date.now(),
+      recipient: recipientLabel,
+      title: notification.title,
+      message: notification.message,
+      time: new Date().toLocaleString()
+    }
+    setSentNotifications([newNotification, ...sentNotifications])
+    setNotification({ recipient: 'all', title: '', message: '', targetId: '' })
+    alert(t('Notification sent successfully!'))
   }
 
   return (
@@ -46,14 +62,14 @@ export default function Notifications() {
               <label className="block text-sm font-medium text-gray-700 mb-2">{t('Recipient')}</label>
               <select
                 value={notification.recipient}
-                onChange={(e) => setNotification({ ...notification, recipient: e.target.value })}
+                onChange={(e) => setNotification({ ...notification, recipient: e.target.value, targetId: '' })}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="all">All ASHA Workers</option>
-                <option value="Ward 1">Patients</option>
-                <option value="Ward 2">Everyone</option>
-                <option value="Ward 3">Specific Asha Worker</option>
-                <option value="Ward 3">Specific Patient</option>
+                <option value="patients">Patients</option>
+                <option value="everyone">Everyone</option>
+                <option value="specific_asha">Specific Asha Worker</option>
+                <option value="specific_patient">Specific Patient</option>
               </select>
             </div>
 
@@ -78,6 +94,19 @@ export default function Notifications() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
+
+            {(notification.recipient === 'specific_patient' || notification.recipient === 'specific_asha') && (
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">{t('Unique ID')}</label>
+                <input
+                  type="text"
+                  value={notification.targetId}
+                  onChange={(e) => setNotification({ ...notification, targetId: e.target.value })}
+                  placeholder={notification.recipient === 'specific_patient' ? t('Enter patient ID') : t('Enter ASHA ID')}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+              </div>
+            )}
 
             <button
               onClick={handleSend}

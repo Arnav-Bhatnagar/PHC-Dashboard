@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Calendar, Clock, MapPin, CreditCard as Edit2, Save, X } from 'lucide-react'
+import { Calendar, Clock, MapPin, CreditCard as Edit2, Save, X, Plus } from 'lucide-react'
 
 const initialSchedule = [
   { id: 1, asha: 'Meera Gupta', day: 'Monday', time: '9:00 AM - 1:00 PM', location: 'Village Rampur', activity: 'Health Checkup Camp' },
@@ -14,6 +14,8 @@ export default function AshaSchedule() {
   const [schedules, setSchedules] = useState(initialSchedule)
   const [editingId, setEditingId] = useState(null)
   const [editForm, setEditForm] = useState({})
+  const [showAddModal, setShowAddModal] = useState(false)
+  const [newForm, setNewForm] = useState({ asha: '', day: 'Monday', time: '', location: '', activity: '' })
 
   const handleEdit = (schedule) => {
     setEditingId(schedule.id)
@@ -33,6 +35,21 @@ export default function AshaSchedule() {
 
   const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
+  const handleOpenAdd = () => {
+    setNewForm({ asha: '', day: 'Monday', time: '', location: '', activity: '' })
+    setShowAddModal(true)
+  }
+
+  const handleAddSave = () => {
+    // basic validation
+    if (!newForm.asha || !newForm.day || !newForm.time) return
+    const nextId = schedules.length ? Math.max(...schedules.map(s => s.id)) + 1 : 1
+    const newSchedule = { id: nextId, ...newForm }
+    setSchedules([newSchedule, ...schedules])
+    setShowAddModal(false)
+    setNewForm({ asha: '', day: 'Monday', time: '', location: '', activity: '' })
+  }
+
   return (
     <div className="p-8">
       <div className="mb-8">
@@ -41,6 +58,15 @@ export default function AshaSchedule() {
       </div>
 
       <div className="grid gap-4">
+        <div className="flex justify-end">
+          <button
+            onClick={handleOpenAdd}
+            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          >
+            <Plus size={16} />
+            Add ASHA Schedule
+          </button>
+        </div>
         {days.map(day => {
           const daySchedules = schedules.filter(s => s.day === day)
 
@@ -144,6 +170,56 @@ export default function AshaSchedule() {
           )
         })}
       </div>
+      {showAddModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-lg max-w-lg w-full p-6">
+            <h3 className="text-xl font-semibold mb-4">Add ASHA Schedule</h3>
+            <div className="space-y-3">
+              <input
+                type="text"
+                placeholder="ASHA Name"
+                value={newForm.asha}
+                onChange={(e) => setNewForm({ ...newForm, asha: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+              />
+              <div className="grid grid-cols-2 gap-3">
+                <select
+                  value={newForm.day}
+                  onChange={(e) => setNewForm({ ...newForm, day: e.target.value })}
+                  className="px-3 py-2 border rounded-lg"
+                >
+                  {days.map(d => <option key={d} value={d}>{d}</option>)}
+                </select>
+                <input
+                  type="text"
+                  placeholder="Time (e.g. 9:00 AM - 1:00 PM)"
+                  value={newForm.time}
+                  onChange={(e) => setNewForm({ ...newForm, time: e.target.value })}
+                  className="px-3 py-2 border border-gray-300 rounded-lg"
+                />
+              </div>
+              <input
+                type="text"
+                placeholder="Location"
+                value={newForm.location}
+                onChange={(e) => setNewForm({ ...newForm, location: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+              />
+              <input
+                type="text"
+                placeholder="Activity"
+                value={newForm.activity}
+                onChange={(e) => setNewForm({ ...newForm, activity: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+              />
+              <div className="flex justify-end gap-2 mt-2">
+                <button onClick={() => setShowAddModal(false)} className="px-4 py-2 bg-gray-300 rounded-lg">Cancel</button>
+                <button onClick={handleAddSave} className="px-4 py-2 bg-green-600 text-white rounded-lg">Save</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

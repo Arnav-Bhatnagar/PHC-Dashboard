@@ -5,12 +5,13 @@ export default function Sidebar({ activeTab, setActiveTab }) {
   const { t, i18n } = useTranslation()
 
   const menuItems = [
+    { id: 'analytics', label: t('Analytics'), icon: BarChart3 },
     { id: 'records', label: t('Health Records'), icon: FileText },
     { id: 'asha', label: t('Manage ASHA'), icon: Users },
     { id: 'medicine', label: t('Medicine Stock'), icon: Package },
     { id: 'notifications', label: t('Notifications'), icon: Bell },
     { id: 'emergency', label: t('Emergency Requests'), icon: AlertCircle },
-    { id: 'analytics', label: t('Analytics'), icon: BarChart3 },
+    
     { id: 'schedule', label: t('ASHA Schedule'), icon: Calendar },
   ]
 

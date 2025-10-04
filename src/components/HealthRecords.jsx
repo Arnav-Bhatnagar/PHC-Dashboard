@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next'
 
 const mockPatients = [
   {
-    id: 1,
+    id: 'P11125',
     name: 'Rajesh Kumar',
     age: 45,
     gender: 'Male',
@@ -32,9 +32,10 @@ const mockPatients = [
       { metric: 'BP Diastolic', values: [98, 95, 92, 90] },
       { metric: 'Weight (kg)', values: [78, 77, 76, 75] },
     ]
+    ,severity: 'urgent'
   },
   {
-    id: 2,
+    id: 'P12126',
     name: 'Sunita Devi',
     age: 32,
     gender: 'Female',
@@ -59,9 +60,10 @@ const mockPatients = [
       { metric: 'Hemoglobin', values: [8.5, 9.2, 10.1] },
       { metric: 'Weight (kg)', values: [53, 54, 55] },
     ]
+    ,severity: 'followup'
   },
   {
-    id: 3,
+    id: 'P13127',
     name: 'Amit Singh',
     age: 28,
     gender: 'Male',
@@ -83,9 +85,10 @@ const mockPatients = [
     recoveryTrend: [
       { metric: 'Temperature (°F)', values: [100.2, 99.8, 99.2] },
     ]
+    ,severity: 'vaccine_pending'
   },
   {
-    id: 4,
+    id: 'P14128',
     name: 'Priya Sharma',
     age: 38,
     gender: 'Female',
@@ -110,6 +113,7 @@ const mockPatients = [
       { metric: 'Blood Sugar (mg/dL)', values: [185, 160, 145, 130] },
       { metric: 'Weight (kg)', values: [75, 74, 73, 72] },
     ]
+    ,severity: 'followup'
   },
 ]
 
@@ -118,11 +122,41 @@ export default function HealthRecords() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedPatient, setSelectedPatient] = useState(null)
   const [pdfLang, setPdfLang] = useState('en')
+  const [severityFilter, setSeverityFilter] = useState('all')
+  const [sortBySeverity, setSortBySeverity] = useState(false)
 
-  const filteredPatients = mockPatients.filter(patient =>
-    patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    patient.contact.includes(searchTerm)
+  const severityOrder = { urgent: 0, followup: 1, vaccine_pending: 2, routine: 3 }
+
+  const severityLabel = (key) => {
+    switch(key) {
+      case 'urgent': return t('Urgent Care')
+      case 'followup': return t('Follow Up')
+      case 'vaccine_pending': return t('Vaccine Pending')
+      default: return t('Routine')
+    }
+  }
+
+  const severityBadgeClass = (key) => {
+    switch(key) {
+      case 'urgent': return 'bg-red-100 text-red-700'
+      case 'followup': return 'bg-yellow-100 text-yellow-700'
+      case 'vaccine_pending': return 'bg-blue-100 text-blue-700'
+      default: return 'bg-gray-100 text-gray-700'
+    }
+  }
+
+  let displayedPatients = mockPatients.filter(patient =>
+    (patient.name.toLowerCase().includes(searchTerm.toLowerCase()) || patient.contact.includes(searchTerm)) &&
+    (severityFilter === 'all' || patient.severity === severityFilter)
   )
+
+  if (sortBySeverity) {
+    displayedPatients = [...displayedPatients].sort((a,b) => {
+      const oa = severityOrder[a.severity] ?? 99
+      const ob = severityOrder[b.severity] ?? 99
+      return oa - ob
+    })
+  }
 
   const { i18n } = useTranslation()
 
@@ -162,21 +196,51 @@ export default function HealthRecords() {
         </div>
       </div>
 
+      <div className="mb-4 flex items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <label className="text-sm text-gray-600">{t('Filter by Severity')}:</label>
+          <select
+            value={severityFilter}
+            onChange={(e) => setSeverityFilter(e.target.value)}
+            className="px-3 py-2 border rounded-lg"
+          >
+            <option value="all">{t('All')}</option>
+            <option value="urgent">{t('Urgent Care')}</option>
+            <option value="followup">{t('Follow Up')}</option>
+            <option value="vaccine_pending">{t('Vaccine Pending')}</option>
+            <option value="routine">{t('Routine')}</option>
+          </select>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <label className="text-sm text-gray-600">{t('Sort by Severity')}:</label>
+          <button
+            onClick={() => setSortBySeverity(s => !s)}
+            className={`px-3 py-2 rounded-lg ${sortBySeverity ? 'bg-blue-600 text-white' : 'bg-gray-100'}`}
+          >
+            {sortBySeverity ? t('On') : t('Off')}
+          </button>
+        </div>
+      </div>
+
       <div className="bg-white rounded-lg shadow overflow-hidden">
         <table className="w-full">
           <thead className="bg-gray-100">
             <tr>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{t('Patient ID')}</th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{t('Patient Name')}</th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{t('Age')}</th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{t('Gender')}</th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{t('Contact')}</th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{t('Last Visit')}</th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{t('Actions')}</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">{t('Severity')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {filteredPatients.map((patient) => (
+            {displayedPatients.map((patient) => (
               <tr key={patient.id} className="hover:bg-gray-50 transition-colors">
+                <td className="px-6 py-4 text-sm text-gray-700">{patient.id}</td>
                 <td className="px-6 py-4 text-sm text-gray-900 font-medium">{patient.name}</td>
                 <td className="px-6 py-4 text-sm text-gray-700">{patient.age}</td>
                 <td className="px-6 py-4 text-sm text-gray-700">{patient.gender}</td>
@@ -199,6 +263,11 @@ export default function HealthRecords() {
                       <Download size={18} />
                     </button>
                   </div>
+                </td>
+                <td className="px-6 py-4 text-sm">
+                  <span className={`text-xs px-2 py-1 rounded-full font-medium ${severityBadgeClass(patient.severity)}`}>
+                    {severityLabel(patient.severity)}
+                  </span>
                 </td>
               </tr>
             ))}
@@ -252,6 +321,18 @@ export default function HealthRecords() {
               <div className="bg-gray-50 p-4 rounded-lg">
                 <h4 className="font-semibold text-gray-800 mb-3">{t('Patient Information')}</h4>
                 <div className="space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">{t('Patient ID')}:</span>
+                    <span className="font-medium">{selectedPatient.id}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600">{t('Severity')}:</span>
+                    <span className="font-medium">
+                      <span className={`text-xs px-2 py-1 rounded-full font-medium ${severityBadgeClass(selectedPatient.severity)}`}>
+                        {severityLabel(selectedPatient.severity)}
+                      </span>
+                    </span>
+                  </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">{t('Age')}:</span>
                     <span className="font-medium">{selectedPatient.age} years</span>

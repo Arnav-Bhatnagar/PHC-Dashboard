@@ -3,7 +3,7 @@ import Dashboard from './components/Dashboard'
 import Sidebar from './components/Sidebar'
 
 function App() {
-  const [activeTab, setActiveTab] = useState('records')
+  const [activeTab, setActiveTab] = useState('analytics')
 
   return (
     <div className="flex h-screen bg-gray-50">

@@ -50,9 +50,10 @@ export default function Notifications() {
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="all">All ASHA Workers</option>
-                <option value="Ward 1">Ward 1</option>
-                <option value="Ward 2">Ward 2</option>
-                <option value="Ward 3">Ward 3</option>
+                <option value="Ward 1">Patients</option>
+                <option value="Ward 2">Everyone</option>
+                <option value="Ward 3">Specific Asha Worker</option>
+                <option value="Ward 3">Specific Patient</option>
               </select>
             </div>
 

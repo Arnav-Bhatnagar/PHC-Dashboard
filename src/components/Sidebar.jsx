@@ -11,7 +11,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
     { id: 'records', label: t('Health Records'), icon: FileText },
     { id: 'medicine', label: t('Medicine Stock'), icon: Package },
     { id: 'notifications', label: t('Notifications'), icon: Bell },
-    { id: 'emergency', label: t('Emergency Requests'), icon: AlertCircle },
+   
     
   ]
 

@@ -5,6 +5,7 @@ import Notifications from './Notifications'
 import EmergencyRequests from './EmergencyRequests'
 import Analytics from './Analytics'
 import AshaSchedule from './AshaSchedule'
+import UploadContent from './UploadContent'
 
 export default function Dashboard({ activeTab }) {
   return (
@@ -16,6 +17,7 @@ export default function Dashboard({ activeTab }) {
       {activeTab === 'emergency' && <EmergencyRequests />}
       {activeTab === 'analytics' && <Analytics />}
       {activeTab === 'schedule' && <AshaSchedule />}
+  {activeTab === 'uploadcontent' && <UploadContent />}
     </div>
   )
 }

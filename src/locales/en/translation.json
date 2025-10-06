@@ -94,4 +94,33 @@
   "OFFICIAL MEDICAL DOCUMENT": "OFFICIAL MEDICAL DOCUMENT",
   "Footer.Line1": "This is an official digitally generated and verified medical record from Primary Health Centre.",
   "Footer.Line2": "For verification of authenticity, please contact PHC administration or visit our official website."
+  ,
+  "upload": {
+    "title": "Upload Health Education Content",
+    "subtitle": "Share educational videos and articles to spread health awareness",
+    "video": "Video",
+    "article": "Article",
+    "titleLabel": "Title",
+    "categoryLabel": "Category",
+    "descriptionLabel": "Description",
+    "videoUrlLabel": "Video URL (YouTube, Vimeo, etc.)",
+    "orLabel": "OR",
+    "clickUpload": "Click to upload or drag and drop",
+    "fileTypes": "MP4, MOV, AVI (Max 500MB)",
+    "chooseFile": "Choose File",
+    "selected": "Selected",
+    "preview": "Preview",
+    "upload": "Upload",
+    "recentUploads": "Recent Uploads",
+    "noContent": "No content uploaded yet",
+    "viewVideo": "View Video",
+    "fileLabel": "File",
+    "uploadedOn": "Uploaded on",
+    "selectCategory": "Select a category",
+    "placeholder": {
+      "title": "Enter content title",
+      "description": "Brief description of the content",
+      "videoUrl": "https://youtube.com/watch?v=..."
+    }
+  }
 }

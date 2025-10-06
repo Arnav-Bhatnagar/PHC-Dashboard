@@ -94,4 +94,33 @@
   "OFFICIAL MEDICAL DOCUMENT": "आधिकारिक चिकित्सा दस्तावेज़",
   "Footer.Line1": "यह प्राथमिक स्वास्थ्य केंद्र से आधिकारिक रूप से जनरेट और सत्यापित चिकित्सा रिकॉर्ड है।",
   "Footer.Line2": "प्रमाणिकता की जाँच के लिए कृपया PHC प्रशासन से संपर्क करें या हमारी आधिकारिक वेबसाइट पर जाएं।"
+  ,
+  "upload": {
+    "title": "स्वास्थ्य शिक्षा सामग्री अपलोड करें",
+    "subtitle": "स्वास्थ्य जागरूकता फैलाने के लिए शैक्षिक वीडियो और लेख साझा करें",
+    "video": "वीडियो",
+    "article": "लेख",
+    "titleLabel": "शीर्षक",
+    "categoryLabel": "वर्ग",
+    "descriptionLabel": "विवरण",
+    "videoUrlLabel": "वीडियो URL (YouTube, Vimeo, आदि)",
+    "orLabel": "या",
+    "clickUpload": "अपलोड करने के लिए क्लिक करें या ड्रैग और ड्रॉप करें",
+    "fileTypes": "MP4, MOV, AVI (अधिकतम 500MB)",
+    "chooseFile": "फ़ाइल चुनें",
+    "selected": "चयनित",
+    "preview": "पूर्वावलोकन",
+    "upload": "अपलोड",
+    "recentUploads": "हाल के अपलोड",
+    "noContent": "अभी तक कोई सामग्री अपलोड नहीं हुई है",
+    "viewVideo": "वीडियो देखें",
+    "fileLabel": "फ़ाइल",
+    "uploadedOn": "अपलोड किया गया",
+    "selectCategory": "एक श्रेणी चुनें",
+    "placeholder": {
+      "title": "सामग्री का शीर्षक दर्ज करें",
+      "description": "सामग्री का संक्षिप्त विवरण",
+      "videoUrl": "https://youtube.com/watch?v=..."
+    }
+  }
 }

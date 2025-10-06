@@ -94,4 +94,33 @@
   "OFFICIAL MEDICAL DOCUMENT": "ਅਧਿਕਾਰਕ ਚਿਕਿਤਸਾ ਦਸਤਾਵੇਜ਼",
   "Footer.Line1": "ਇਹ ਪ੍ਰਾਇਮਰੀ ਹੈਲਥ ਸੈਂਟਰ ਤੋਂ ਇੱਕ ਅਧਿਕਾਰਿਕ ਤੌਰ 'ਤੇ ਜਨਰੇਟ ਅਤੇ ਸਹੀ ਕੀਤੀ ਗਈ ਚਿਕਿਤਸਾ ਰਿਕਾਰਡ ਹੈ।",
   "Footer.Line2": "ਪ੍ਰਮਾਣਿਕਤਾ ਦੀ ਜਾਂਚ ਲਈ ਕਿਰਪਾ ਕਰਕੇ PHC ਪ੍ਰਬੰਧਨ ਨਾਲ ਸੰਪਰਕ ਕਰੋ ਜਾਂ ਸਾਡੀ ਅਧਿਕਾਰਿਕ ਵੈੱਬਸਾਈਟ 'ਤੇ ਜਾਓ।"
+  ,
+  "upload": {
+    "title": "ਸਿਹਤ ਸਿਖਲਾਈ ਸਮੱਗਰੀ ਅਪਲੋਡ ਕਰੋ",
+    "subtitle": "ਸਿਹਤ ਜਾਗਰੂਕਤਾ ਫੈਲਾਉਣ ਲਈ ਸਿੱਖਿਆatਮਕ ਵੀਡੀਓ ਅਤੇ ਲੇਖ ਸਾਂਝੇ ਕਰੋ",
+    "video": "ਵੀਡੀਓ",
+    "article": "ਲੇਖ",
+    "titleLabel": "ਸਿਰਲੇਖ",
+    "categoryLabel": "ਸ਼੍ਰੇਣੀ",
+    "descriptionLabel": "ਵੇਰਵਾ",
+    "videoUrlLabel": "ਵੀਡੀਓ URL (YouTube, Vimeo, ਆਦਿ)",
+    "orLabel": "ਜਾਂ",
+    "clickUpload": "ਅਪਲੋਡ ਕਰਨ ਲਈ ਕਲਿੱਕ ਕਰੋ ਜਾਂ ਡਰੈਗ ਅਤੇ ਡ੍ਰੌਪ ਕਰੋ",
+    "fileTypes": "MP4, MOV, AVI (ਵੱਧ ਤੋਂ ਵੱਧ 500MB)",
+    "chooseFile": "ਫ਼ਾਈਲ ਚੁਣੋ",
+    "selected": "ਚੁਣਿਆ ਗਿਆ",
+    "preview": "ਪੂਰਵ ਦੇਖਾਓ",
+    "upload": "ਅਪਲੋਡ",
+    "recentUploads": "ਹਾਲੀਆ ਅਪਲੋਡ",
+    "noContent": "ਹੁਣ ਤੱਕ ਕੋਈ ਸਮੱਗਰੀ ਅਪਲੋਡ ਨਹੀਂ ਹੋਈ",
+    "viewVideo": "ਵੀਡੀਓ ਵੇਖੋ",
+    "fileLabel": "ਫ਼ਾਈਲ",
+    "uploadedOn": "ਅਪਲੋਡ ਕੀਤਾ ਗਿਆ",
+    "selectCategory": "ਇੱਕ ਸ਼੍ਰੇਣੀ ਚੁਣੋ",
+    "placeholder": {
+      "title": "ਸਮੱਗਰੀ ਦਾ ਸਿਰਲੇਖ ਦਰਜ ਕਰੋ",
+      "description": "ਸਮੱਗਰੀ ਦਾ ਸੰਗ੍ਰਹਿਤ ਵੇਰਵਾ",
+      "videoUrl": "https://youtube.com/watch?v=..."
+    }
+  }
 }

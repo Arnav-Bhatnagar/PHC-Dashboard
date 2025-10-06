@@ -1,4 +1,4 @@
-import { FileText, Users, Package, Bell, AlertCircle, BarChart3, Calendar } from 'lucide-react'
+import { FileText, Users, Package, Bell, AlertCircle, BarChart3, Calendar,Upload } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 export default function Sidebar({ activeTab, setActiveTab }) {
@@ -11,6 +11,7 @@ export default function Sidebar({ activeTab, setActiveTab }) {
     { id: 'records', label: t('Health Records'), icon: FileText },
     { id: 'medicine', label: t('Medicine Stock'), icon: Package },
     { id: 'notifications', label: t('Notifications'), icon: Bell },
+  { id: 'uploadcontent', label: t('upload.title'), icon: Upload },
    
     
   ]
